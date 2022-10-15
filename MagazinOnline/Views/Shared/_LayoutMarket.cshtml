@@ -1,0 +1,91 @@
+﻿@inject IHttpContextAccessor HttpContextAccessor
+
+@{ var shoppingList = HttpContextAccessor.HttpContext.Session.Get<Dictionary<int, int>>(SessionHelper.ShoppingCart);
+    var quantity = 0;
+    if (shoppingList != null)
+    {
+        foreach (var value in shoppingList.Values)
+        {
+            quantity += (int)value;
+        }
+    }
+    var shoppingCount = quantity; }
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MagazinOnline</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="~/assets/vendor/nucleo/css/nucleo.css" type="text/css">
+    <link rel="stylesheet" href="~/assets/vendor/fortawesome/fontawesome-free/css/all.min.css" type="text/css">
+
+    <!-- Argon CSS -->
+    <link rel="stylesheet" href="~/assets/css/argon.css" type="text/css">
+    <link rel="stylesheet" href="~/assets/vendor/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="~/css/site.css" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Argon scripts-->
+    <script src="~/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendor/js-cookie/js.cookie.js"></script>
+    <script src="~/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+
+    <!-- Argon JS -->
+    <script src="~/assets/vendor/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/assets/js/argon.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MagazinOnline</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Market" asp-action="Index">Produse</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Comenzi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-blue" asp-controller="Products" asp-action="Index">Administrare produse</a>
+                        </li>
+                    </ul>
+                </div>
+                <button class="btn btn-icon btn-primary" type="button" onclick="location.href='@Url.Action("Create", "Orders")'">
+
+                    <span class="btn-inner--icon"><i class="ni ni-cart"></i></span>
+                    <span class="btn-inner--text">@shoppingCount</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - MagazinOnline - Afaceri Electronice
+        </div>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,79 @@
+﻿@inject IHttpContextAccessor HttpContextAccessor
+@model MagazinOnline.Data.Models.Orders.Order
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutMarket.cshtml";
+}
+
+@{ var shoppingList = HttpContextAccessor.HttpContext.Session.Get<Dictionary<int, int>>(SessionHelper.ShoppingCart); }
+
+<h1>New Order</h1>
+<hr />
+
+<form asp-action="Create">
+    <div class="row">
+        @if (Model.OrderProducts.Count > 0)
+        {
+            <h3>List of products</h3>
+            <div class="col-md-12">
+
+                @foreach (var product in Model.OrderProducts)
+                {
+                    <div class="card mb-4">
+
+                        <div class="card-header row">
+                            <h1 class="m-3">@shoppingList[product.Product.Id] x</h1>
+                            <h4 class="my-0 font-weight-normal m-3">
+                                <label style="font-size: 14px; color:#5e72e4;">@product.Product.Brand</label><br />
+                                <label style="font-size: 13px; color: #1b6ec2;">@product.Product.Description</label><br />
+                                <label style="font-size:13px; color:#a51313"><b>$@product.Product.Price</b></label>
+                            </h4>
+                            @if (product.Product.Image != null)
+                            {
+                                <input type="image" src="data:image/gif;base64,@Convert.ToBase64String(product.Product.Image)" onclick="return false;" class="m-3 card-img-top" style="max-height: 100px;max-width:55px;cursor:context-menu" />
+                            }
+                            else
+                            {
+                                <input type="image" src="~/images/noPhotoUploaded.png" class="m-3 card-img-top" style="max-height:100px;max-width:55px;cursor:context-menu" onclick="return false;" />
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            <br />
+            <h3 class="col-md-12">Client Informations</h3>
+            <br />
+            <div class="form-group col-md-6">
+                <label asp-for="CustomerName" class="control-label"></label>
+                <input asp-for="CustomerName" class="form-control" />
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="CustomerAddress" class="control-label"></label>
+                <input asp-for="CustomerAddress" class="form-control" />
+                <span asp-validation-for="CustomerAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="CustomerPhoneNumber" class="control-label"></label>
+                <input asp-for="CustomerPhoneNumber" class="form-control" />
+                <span asp-validation-for="CustomerPhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="CustomerEmail" class="control-label"></label>
+                <input asp-for="CustomerEmail" class="form-control" />
+                <span asp-validation-for="CustomerEmail" class="text-danger"></span>
+            </div>
+
+            <div class="form-group  col-md-6 mb-6">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        }
+        else
+        {
+            <h3>Your cart is empty.</h3>
+        }
+    </div>
+
+</form>
+

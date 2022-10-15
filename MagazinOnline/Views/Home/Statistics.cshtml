@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Statistics";
+}
+
+<div class="row">
+    <div class="col-xl-4 col-md-4">
+        <div class="card card-stats">
+            <!-- Card body -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Total orders</h5>
+                        <span class="h2 font-weight-bold mb-0">@ViewData["TotalOrders"]</span>
+                    </div>
+                    <div class="col-auto">
+                        <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
+                            <i class="ni ni-bag-17"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-4">
+        <div class="card card-stats">
+            <!-- Card body -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Products sold</h5>
+                        <span class="h2 font-weight-bold mb-0">@ViewData["ProductsSold"]</span>
+                    </div>
+                    <div class="col-auto">
+                        <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
+                            <i class="ni ni-chart-pie-35"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-4">
+        <div class="card card-stats">
+            <!-- Card body -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Sales</h5>
+                        <span class="h2 font-weight-bold mb-0">$ @ViewData["Sales"]</span>
+                    </div>
+                    <div class="col-auto">
+                        <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
+                            <i class="ni ni-money-coins"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card bg-default">
+    <div class="card-body">
+        <div class="chart">
+            <!-- Chart wrapper -->
+            <canvas id="chart-sales" class="chart-canvas"></canvas>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        var labels = JSON.parse('@Json.Serialize(ViewData["Days"])');
+        var salesOnDays = JSON.parse('@Json.Serialize(ViewData["SalesOnDays"])');
+        var salesChart = new Chart($('#chart-sales')[0], {
+            type: 'line',
+            options: {
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            color: Charts.colors.gray[200],
+                            zeroLineColor: Charts.colors.gray[200]
+                        },
+                        ticks: {
+
+                        }
+                    }]
+                }
+            },
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Sales $',
+                    data: salesOnDays
+                }]
+            }
+        });
+
+        // Save to jQuery object
+
+        $.data('chart', salesChart);
+    </script>
+}

@@ -1,0 +1,82 @@
+﻿@model MagazinOnline.Data.Models.Products.Product
+
+@{
+    Layout = "";
+}
+
+<div class="modal-header">
+    <div class="form-group">
+        <h4 class="modal-title">@Model.Brand</h4><br />
+        <h5 class="modal-title">@Model.Description</h5>
+    </div>
+</div>
+<div class="modal-body" style="max-height:230px">
+    <form>
+        <div class="row">
+            <div class="col-md-6">
+                @if (Model.IsAvailable)
+                {
+                    <label>In stock</label>
+                }
+                else
+                {
+                    <label style="color:red">Product unavailable</label>
+                }
+                <div class="form-group">
+                    @Html.DisplayNameFor(model => model.Price)
+                    @Html.DisplayFor(model => model.Price)
+                </div>
+                @if (Model.IsAvailable)
+                {
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input class="form-control" type="number" id="quantity" min="0" value="0" />
+                    </div>
+                    <div class="form-group">
+                        <input type="button" id="addToBasket" value="Add to basket" class="btn btn-primary" />
+                    </div>
+                }
+
+            </div>
+            <div class="col-md-6 text-center">
+                <div class="form-group">
+                    @if (Model.Image != null)
+                    {
+                        <input type="image" src="data:image/gif;base64,@Convert.ToBase64String(Model.Image)" style="max-height:200px;" />
+                    }
+                    else
+                    {
+                        <input type="image" src="~/images/noPhotoUploaded.png" style="max-height:550px;" />
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default"
+            data-dismiss="modal">
+        Close
+    </button>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $(document).on('click', '#addToBasket', function () {
+            var data = {
+                "productId": @Model.Id,
+                "quantity": $('#quantity')[0].value
+            };
+            if (data.quantity > 0) {
+            $.post(url = "/Market/AddToBasket/", data = $.param(data),
+                success = function (returnData, status, xhr) {
+                    if (returnData) {
+                        document.location.reload();
+                    }
+                });
+            }
+        });
+    })
+</script>

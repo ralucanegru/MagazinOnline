@@ -1,0 +1,92 @@
+﻿@model IEnumerable<MagazinOnline.Data.Models.Products.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutMarket.cshtml";
+
+}
+
+<h1>Index</h1>
+
+<ul class="nav nav-pills nav-pills-circle m-2" id="tabs_2" role="tablist">
+    <li class="nav-item">
+        <a asp-controller="Market" asp-action="Index" asp-route-filter="All" class="nav-link rounded-circle">
+            <span class="nav-link-icon d-block">All</span>
+        </a>
+    </li>
+    <li asp-controller="Market" class="nav-item">
+        <a asp-action="Index" asp-route-filter="W" class="nav-link rounded-circle">
+            <span class="nav-link-icon d-block">W</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a asp-controller="Market" asp-action="Index" asp-route-filter="M" class="nav-link  rounded-circle">
+            <span class="nav-link-icon d-block">M</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a asp-controller="Market" asp-action="Index" asp-route-filter="K" class="nav-link  rounded-circle">
+            <span class="nav-link-icon d-block">K</span>
+        </a>
+    </li>
+</ul>
+
+<div class="row">
+
+    @foreach (var product in Model)
+    {
+        <div class="col-4">
+            <form action="/Market/Add" method="post">
+                <div class="card mb-4">
+
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">
+                            <label style="font-size: 17px; color:#5e72e4;">@product.Brand</label><br />
+                            <label style="font-size: 14px; color: #1b6ec2;">@product.Description</label>
+                        </h4>
+
+                    </div>
+                    @if (product.Image != null)
+                    {
+                        <input type="image" src="data:image/gif;base64,@Convert.ToBase64String(product.Image)" onclick="return false;" class="card-img-top" style="max-height: 490px;cursor:context-menu" />
+                    }
+                    else
+                    {
+                        <input type="image" src="~/images/noPhotoUploaded.png" class="card-img-top" style="max-height:490px;cursor:context-menu" onclick="return false;" />
+                    }
+
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <label style="font-size:20px; color:#a51313"><b>$@product.Price</b></label>
+                            </div>
+                            <span class="btn btn-xs btn-primary btnEdit" id="edit_@product.Id" onclick="createModal('@Url.Action("Details", "Market" , new {id=@product.Id })')">View Details</span>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>}
+
+</div>
+<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content" id="modelContent">
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('span.nav-link-icon').each(function () {
+            if (this.textContent == '@ViewData["Filter"]') {
+                this.parentElement.classList.add("active");
+            }
+        });
+    })
+
+    function createModal(url) {
+        $('#modelContent').load(url);
+        $('#myModal').modal('show');
+    }
+</script>

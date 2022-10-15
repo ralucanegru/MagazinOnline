@@ -1,0 +1,86 @@
+﻿@model MagazinOnline.Data.Models.Orders.Order
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CustomerName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CustomerPhoneNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerPhoneNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CustomerEmail)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerEmail)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CustomerAddress)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerAddress)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+        @{
+            var nrProducts = 0;
+            decimal totalValue = 0;
+            foreach (var op in Model.OrderProducts)
+            {
+                nrProducts += op.Quantity;
+                totalValue += op.Quantity * op.Product.Price;
+            }
+        }
+        <dt class="col-sm-2">Number of products</dt>
+        <dd class="col-sm-10">@nrProducts</dd>
+        <dt class="col-sm-2">Value</dt>
+        <dd class="col-sm-10">@totalValue</dd>
+
+    </dl>
+</div>
+<div class="col-md-12">
+
+    @foreach (var product in Model.OrderProducts)
+    {
+        <div class="card mb-4">
+
+            <div class="card-header row">
+                <h1 class="m-3">@product.Quantity x</h1>
+                <h4 class="my-0 font-weight-normal m-3">
+                    <label style="font-size: 14px; color:#5e72e4;">@product.Product.Brand</label><br />
+                    <label style="font-size: 13px; color: #1b6ec2;">@product.Product.Description</label><br />
+                    <label style="font-size:13px; color:#a51313"><b>$@product.Product.Price</b></label>
+                </h4>
+                @if (product.Product.Image != null)
+                {
+                    <input type="image" src="data:image/gif;base64,@Convert.ToBase64String(product.Product.Image)" onclick="return false;" class="m-3 card-img-top" style="max-height: 100px;max-width:55px;cursor:context-menu" />
+                }
+                else
+                {
+                    <input type="image" src="~/images/noPhotoUploaded.png" class="m-3 card-img-top" style="max-height:100px;max-width:55px;cursor:context-menu" onclick="return false;" />
+                }
+            </div>
+        </div>
+    }
+</div>
+<div>
+    <a class="mb-3" asp-action="Index">Back to List</a>
+</div>

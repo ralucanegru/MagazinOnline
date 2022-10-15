@@ -1,0 +1,55 @@
+﻿@model MagazinOnline.Data.Models.Products.Product
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Product</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.DisplayNameFor(model => model.Brand)
+                @Html.DisplayFor(model => model.Brand)
+            </div>
+            <div class="form-group">
+                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayFor(model => model.Description)
+            </div>
+            <div class="form-group">
+                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayFor(model => model.Price)
+            </div>
+            <div class="form-group">
+                @Html.DisplayNameFor(model => model.IsAvailable)
+                @Html.DisplayFor(model => model.IsAvailable)
+            </div>
+            <div class="form-group">
+                @Html.DisplayNameFor(model => model.ProductType)
+                @Html.DisplayFor(model => model.ProductType.Name)
+            </div>
+        </div>
+        <div class="col-md-3 text-center">
+            <div class="form-group">
+                @if (Model.Image != null)
+                {
+                    <input type="image" src="data:image/gif;base64,@Convert.ToBase64String(Model.Image)" style="max-height:200px;" />
+                }
+                else
+                {
+                    <input type="image" src="~/images/noPhotoUploaded.png" style="max-height:200px;" />
+                }
+            </div>
+        </div>
+    </div>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

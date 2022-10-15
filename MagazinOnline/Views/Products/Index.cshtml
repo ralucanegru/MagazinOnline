@@ -1,0 +1,91 @@
+﻿@model IEnumerable<MagazinOnline.Data.Models.Products.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAvailable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                @switch (item.Gender)
+                {
+                    case (char)'K':
+                        <td>Kids</td>
+                        break;
+                    case (char)'F':
+                        <td>Women</td>
+                        break;
+                    case (char)'M':
+                        <td>Men</td>
+                        break;
+                }
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsAvailable)
+                </td>
+                @if (item.Image != null)
+                {
+                    <td>
+                        <input type="image" src="data:image/gif;base64,@Convert.ToBase64String(item.Image)" style="width:100px;height:100px" />
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <input type="image" src="~/images/noPhotoUploaded.png" style="width:100px;height:100px" />
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductType.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
